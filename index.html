@@ -57,8 +57,8 @@
 
         .architecture-layer {
             position: absolute;
-            width: 30%;
-            height: 35%;
+            width: 45%;
+            height: 55%;
             opacity: 0;
             transition: all 0.5s ease-in-out;
             z-index: 2;
@@ -324,9 +324,6 @@
                     return;
                 }
 
-                // 检查是否需要清理旧的架构图
-                this.cleanupOldLayers();
-
                 const arch = this.architectures[this.currentIndex];
                 console.log('当前架构:', arch.name || arch.name_new);
                 
@@ -355,6 +352,8 @@
 
                 this.currentIndex++;
                 this.updateInfo();
+                
+                // 不再清理旧的架构图，让它们永远保留
             }
 
             createArchitectureLayer(arch) {
@@ -369,15 +368,27 @@
                 svgContainer.style.display = 'flex';
                 svgContainer.style.alignItems = 'center';
                 svgContainer.style.justifyContent = 'center';
+                svgContainer.style.background = 'transparent';
                 
-                // 优化SVG大小
+                // 优化SVG大小并去掉白边
                 const svg = svgContainer.querySelector('svg');
                 if (svg) {
                     svg.style.width = '100%';
                     svg.style.height = '100%';
                     svg.style.maxWidth = '100%';
                     svg.style.maxHeight = '100%';
+                    svg.style.background = 'transparent';
                     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                    
+                    // 去掉SVG中的白色背景
+                    const rects = svg.querySelectorAll('rect');
+                    rects.forEach(rect => {
+                        if (rect.getAttribute('fill') === '#f8f9fa' || 
+                            rect.getAttribute('fill') === '#ffffff' ||
+                            rect.getAttribute('fill') === 'white') {
+                            rect.style.display = 'none';
+                        }
+                    });
                 }
                 
                 layer.appendChild(svgContainer);
@@ -389,14 +400,14 @@
                 const canvasRect = canvas.getBoundingClientRect();
                 
                 // 计算可用区域（减去架构图本身的尺寸）
-                const layerWidth = canvasRect.width * 0.30; // 30%宽度
-                const layerHeight = canvasRect.height * 0.35; // 35%高度
+                const layerWidth = canvasRect.width * 0.45; // 45%宽度
+                const layerHeight = canvasRect.height * 0.55; // 55%高度
                 
                 const maxX = canvasRect.width - layerWidth;
                 const maxY = canvasRect.height - layerHeight;
                 
-                // 使用适合更大架构图的网格系统
-                const gridCols = 3;
+                // 使用网格系统来更好地分布架构图
+                const gridCols = 2;
                 const gridRows = 2;
                 const cellWidth = maxX / gridCols;
                 const cellHeight = maxY / gridRows;
@@ -405,7 +416,7 @@
                 const gridX = Math.floor(Math.random() * gridCols);
                 const gridY = Math.floor(Math.random() * gridRows);
                 
-                // 在网格单元内随机位置，留出边距
+                // 在网格单元内随机位置
                 const margin = 30;
                 const x = gridX * cellWidth + margin + Math.random() * (cellWidth - layerWidth - margin * 2);
                 const y = gridY * cellHeight + margin + Math.random() * (cellHeight - layerHeight - margin * 2);
@@ -420,26 +431,7 @@
                 layer.style.transform = `scale(${scale}) rotate(${rotation}deg)`;
             }
 
-            cleanupOldLayers() {
-                const layers = document.querySelectorAll('.architecture-layer');
-                const maxLayers = 6; // 最多保留6个架构图（因为现在更大了）
-                
-                if (layers.length > maxLayers) {
-                    // 移除最旧的几个架构图
-                    const layersToRemove = layers.length - maxLayers;
-                    for (let i = 0; i < layersToRemove; i++) {
-                        if (layers[i]) {
-                            layers[i].style.opacity = '0';
-                            layers[i].style.transform = 'scale(0.5) rotate(45deg)';
-                            setTimeout(() => {
-                                if (layers[i] && layers[i].parentNode) {
-                                    layers[i].parentNode.removeChild(layers[i]);
-                                }
-                            }, 300);
-                        }
-                    }
-                }
-            }
+
 
             markAsNewFinding(layer, arch) {
                 layer.classList.add('new-finding');
