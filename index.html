@@ -57,8 +57,8 @@
 
         .architecture-layer {
             position: absolute;
-            width: 20%;
-            height: 25%;
+            width: 30%;
+            height: 35%;
             opacity: 0;
             transition: all 0.5s ease-in-out;
             z-index: 2;
@@ -389,15 +389,15 @@
                 const canvasRect = canvas.getBoundingClientRect();
                 
                 // 计算可用区域（减去架构图本身的尺寸）
-                const layerWidth = canvasRect.width * 0.20; // 20%宽度
-                const layerHeight = canvasRect.height * 0.25; // 25%高度
+                const layerWidth = canvasRect.width * 0.30; // 30%宽度
+                const layerHeight = canvasRect.height * 0.35; // 35%高度
                 
                 const maxX = canvasRect.width - layerWidth;
                 const maxY = canvasRect.height - layerHeight;
                 
-                // 使用更密集的网格系统来更好地分布
-                const gridCols = 5;
-                const gridRows = 4;
+                // 使用适合更大架构图的网格系统
+                const gridCols = 3;
+                const gridRows = 2;
                 const cellWidth = maxX / gridCols;
                 const cellHeight = maxY / gridRows;
                 
@@ -406,7 +406,7 @@
                 const gridY = Math.floor(Math.random() * gridRows);
                 
                 // 在网格单元内随机位置，留出边距
-                const margin = 20;
+                const margin = 30;
                 const x = gridX * cellWidth + margin + Math.random() * (cellWidth - layerWidth - margin * 2);
                 const y = gridY * cellHeight + margin + Math.random() * (cellHeight - layerHeight - margin * 2);
                 
@@ -422,7 +422,7 @@
 
             cleanupOldLayers() {
                 const layers = document.querySelectorAll('.architecture-layer');
-                const maxLayers = 20; // 最多保留20个架构图
+                const maxLayers = 6; // 最多保留6个架构图（因为现在更大了）
                 
                 if (layers.length > maxLayers) {
                     // 移除最旧的几个架构图
