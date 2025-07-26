@@ -57,8 +57,8 @@
 
         .architecture-layer {
             position: absolute;
-            width: 135%;
-            height: 165%;
+            width: 80%;
+            height: 90%;
             opacity: 0;
             transition: all 0.5s ease-in-out;
             z-index: 2;
@@ -66,6 +66,7 @@
             overflow: hidden;
             transform: scale(0.8);
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background: white;
         }
 
         .architecture-layer.active {
@@ -369,7 +370,7 @@
                 svgContainer.style.display = 'flex';
                 svgContainer.style.alignItems = 'center';
                 svgContainer.style.justifyContent = 'center';
-                svgContainer.style.background = 'transparent';
+                svgContainer.style.background = 'white';
                 
                 // 优化SVG大小并去掉白边
                 const svg = svgContainer.querySelector('svg');
@@ -378,44 +379,11 @@
                     svg.style.height = '100%';
                     svg.style.maxWidth = '100%';
                     svg.style.maxHeight = '100%';
-                    svg.style.background = 'transparent';
+                    svg.style.background = 'white';
                     svg.setAttribute('preserveAspectRatio', 'xMidYMid meet');
                     
-                    // 去掉SVG中的白色背景
-                    const rects = svg.querySelectorAll('rect');
-                    rects.forEach(rect => {
-                        if (rect.getAttribute('fill') === '#f8f9fa' || 
-                            rect.getAttribute('fill') === '#ffffff' ||
-                            rect.getAttribute('fill') === 'white' ||
-                            rect.getAttribute('fill') === '#f5f5f5' ||
-                            rect.getAttribute('fill') === '#fafafa') {
-                            rect.style.display = 'none';
-                        }
-                    });
-                    
-                    // 去掉SVG中的白色圆形和其他白色元素
-                    const circles = svg.querySelectorAll('circle');
-                    circles.forEach(circle => {
-                        if (circle.getAttribute('fill') === '#f8f9fa' || 
-                            circle.getAttribute('fill') === '#ffffff' ||
-                            circle.getAttribute('fill') === 'white' ||
-                            circle.getAttribute('fill') === '#f5f5f5' ||
-                            circle.getAttribute('fill') === '#fafafa') {
-                            circle.style.display = 'none';
-                        }
-                    });
-                    
-                    // 去掉SVG中的白色路径
-                    const paths = svg.querySelectorAll('path');
-                    paths.forEach(path => {
-                        if (path.getAttribute('fill') === '#f8f9fa' || 
-                            path.getAttribute('fill') === '#ffffff' ||
-                            path.getAttribute('fill') === 'white' ||
-                            path.getAttribute('fill') === '#f5f5f5' ||
-                            path.getAttribute('fill') === '#fafafa') {
-                            path.style.display = 'none';
-                        }
-                    });
+                    // 保留SVG中的所有元素，不再隐藏白色背景
+                    // 这样可以保持架构图的完整性
                 }
                 
                 layer.appendChild(svgContainer);
@@ -427,8 +395,8 @@
                 const canvasRect = canvas.getBoundingClientRect();
                 
                 // 计算可用区域（减去架构图本身的尺寸）
-                const layerWidth = canvasRect.width * 1.35; // 135%宽度
-                const layerHeight = canvasRect.height * 1.65; // 165%高度
+                const layerWidth = canvasRect.width * 0.8; // 80%宽度
+                const layerHeight = canvasRect.height * 0.9; // 90%高度
                 
                 const maxX = canvasRect.width - layerWidth;
                 const maxY = canvasRect.height - layerHeight;
