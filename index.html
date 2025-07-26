@@ -57,8 +57,8 @@
 
         .architecture-layer {
             position: absolute;
-            width: 45%;
-            height: 55%;
+            width: 135%;
+            height: 165%;
             opacity: 0;
             transition: all 0.5s ease-in-out;
             z-index: 2;
@@ -354,6 +354,7 @@
                 this.updateInfo();
                 
                 // 不再清理旧的架构图，让它们永远保留
+                // 注意：这里注释掉了清理逻辑，架构图会一直保留在画布上
             }
 
             createArchitectureLayer(arch) {
@@ -385,8 +386,34 @@
                     rects.forEach(rect => {
                         if (rect.getAttribute('fill') === '#f8f9fa' || 
                             rect.getAttribute('fill') === '#ffffff' ||
-                            rect.getAttribute('fill') === 'white') {
+                            rect.getAttribute('fill') === 'white' ||
+                            rect.getAttribute('fill') === '#f5f5f5' ||
+                            rect.getAttribute('fill') === '#fafafa') {
                             rect.style.display = 'none';
+                        }
+                    });
+                    
+                    // 去掉SVG中的白色圆形和其他白色元素
+                    const circles = svg.querySelectorAll('circle');
+                    circles.forEach(circle => {
+                        if (circle.getAttribute('fill') === '#f8f9fa' || 
+                            circle.getAttribute('fill') === '#ffffff' ||
+                            circle.getAttribute('fill') === 'white' ||
+                            circle.getAttribute('fill') === '#f5f5f5' ||
+                            circle.getAttribute('fill') === '#fafafa') {
+                            circle.style.display = 'none';
+                        }
+                    });
+                    
+                    // 去掉SVG中的白色路径
+                    const paths = svg.querySelectorAll('path');
+                    paths.forEach(path => {
+                        if (path.getAttribute('fill') === '#f8f9fa' || 
+                            path.getAttribute('fill') === '#ffffff' ||
+                            path.getAttribute('fill') === 'white' ||
+                            path.getAttribute('fill') === '#f5f5f5' ||
+                            path.getAttribute('fill') === '#fafafa') {
+                            path.style.display = 'none';
                         }
                     });
                 }
@@ -400,15 +427,15 @@
                 const canvasRect = canvas.getBoundingClientRect();
                 
                 // 计算可用区域（减去架构图本身的尺寸）
-                const layerWidth = canvasRect.width * 0.45; // 45%宽度
-                const layerHeight = canvasRect.height * 0.55; // 55%高度
+                const layerWidth = canvasRect.width * 1.35; // 135%宽度
+                const layerHeight = canvasRect.height * 1.65; // 165%高度
                 
                 const maxX = canvasRect.width - layerWidth;
                 const maxY = canvasRect.height - layerHeight;
                 
                 // 使用网格系统来更好地分布架构图
-                const gridCols = 2;
-                const gridRows = 2;
+                const gridCols = 3;
+                const gridRows = 3;
                 const cellWidth = maxX / gridCols;
                 const cellHeight = maxY / gridRows;
                 
@@ -417,7 +444,7 @@
                 const gridY = Math.floor(Math.random() * gridRows);
                 
                 // 在网格单元内随机位置
-                const margin = 30;
+                const margin = 50;
                 const x = gridX * cellWidth + margin + Math.random() * (cellWidth - layerWidth - margin * 2);
                 const y = gridY * cellHeight + margin + Math.random() * (cellHeight - layerHeight - margin * 2);
                 
