@@ -229,12 +229,12 @@
                     clearInterval(this.autoPlayInterval);
                 }
                 
-                // 设置100ms间隔的自动播放
+                // 设置500ms间隔的自动播放
                 this.autoPlayInterval = setInterval(() => {
                     if (this.isPlaying) {
                 this.showNextArchitecture();
                     }
-                }, 100);
+                }, 500);
             }
 
             pauseDiscovery() {
